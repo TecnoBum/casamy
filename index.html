@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Casa Milagro y Yamile · hostel & rooms</title>
+  <!-- Fuente moderna Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 (iconos) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Flatpickr para datepickers elegantes -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background-color: #faf9f6;
+      color: #1e1e2a;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    /* variables suaves */
+    :root {
+      --bg-light: #faf9f6;
+      --card-bg: #ffffff;
+      --accent: #e86a5f;        /* coral suave */
+      --accent-light: #fee9e7;
+      --text-dark: #1e1e2a;
+      --text-soft: #4e4e5e;
+      --shadow-sm: 0 12px 28px -8px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.02);
+      --shadow-hover: 0 24px 42px -12px rgba(232, 106, 95, 0.25);
+      --border-radius-card: 1.8rem;
+      --border-radius-btn: 3rem;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      width: 100%;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(0,0,0,0.02);
+      box-shadow: var(--shadow-sm);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: -0.02em;
+      color: var(--text-dark);
+      white-space: nowrap;
+    }
+    .logo span {
+      color: var(--accent);
+      font-weight: 300;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 500;
+      color: var(--text-soft);
+      transition: color 0.2s ease, transform 0.2s;
+      font-size: 1rem;
+    }
+    .nav-links a:hover {
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* Language selector */
+    .lang-selector {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      background: rgba(255,255,255,0.5);
+      padding: 0.3rem 0.8rem;
+      border-radius: 3rem;
+      backdrop-filter: blur(4px);
+    }
+    .lang-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0.2rem 0.4rem;
+      border-radius: 50%;
+      transition: transform 0.2s, box-shadow 0.2s;
+      line-height: 1;
+    }
+    .lang-btn:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 0 3px rgba(232,106,95,0.3);
+    }
+    .lang-btn.active {
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      background: linear-gradient(115deg, #ffffff 0%, #f6f3f0 100%);
+      border-bottom-left-radius: 4rem;
+      border-bottom-right-radius: 4rem;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('https://i.postimg.cc/pd5rzHbj/Sin-trfeitulo.jpg') no-repeat center center/cover;
+      opacity: 0.1;
+      pointer-events: none;
+      animation: slowZoom 20s infinite alternate ease-in-out;
+    }
+
+    @keyframes slowZoom {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.05); }
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      gap: 3rem;
+      position: relative;
+      z-index: 2;
+      padding: 2rem 0;
+    }
+
+    .hero-content {
+      animation: fadeUp 1s ease-out;
+    }
+    .hero-content .badge {
+      background: var(--accent-light);
+      color: var(--accent);
+      display: inline-block;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.3px;
+      animation: pulseGlow 2s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 0 0 rgba(232,106,95,0.4); }
+      70% { box-shadow: 0 0 0 8px rgba(232,106,95,0); }
+      100% { box-shadow: 0 0 0 0 rgba(232,106,95,0); }
+    }
+
+    .hero-content h1 {
+      font-size: clamp(2.5rem, 5vw, 3.8rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--text-dark);
+      margin-bottom: 1.2rem;
+    }
+    .hero-content p {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--text-soft);
+      max-width: 90%;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+      padding: 1rem 2.5rem;
+      border-radius: var(--border-radius-btn);
+      text-decoration: none;
+      transition: all 0.25s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: 0 8px 18px -6px rgba(232,106,95,0.4);
+      animation: subtleWiggle 6s infinite;
+    }
+    .btn i {
+      transition: transform 0.2s;
+    }
+    .btn:hover {
+      background: #d44e42;
+      box-shadow: 0 14px 26px -8px rgba(232,106,95,0.6);
+      transform: scale(1.02) translateY(-2px);
+    }
+    .btn:hover i {
+      transform: translateX(4px);
+    }
+
+    @keyframes subtleWiggle {
+      0%, 80% { transform: rotate(0deg); }
+      85% { transform: rotate(1deg); }
+      90% { transform: rotate(-1deg); }
+      95% { transform: rotate(0.5deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    /* Hero image con bordes difuminados */
+    .hero-image {
+      position: relative;
+      height: min(440px, 50vw);
+      border-radius: 3rem;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      animation: fadeIn 1.2s, float 6s ease-in-out infinite;
+    }
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .hero-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: 3rem;
+      box-shadow: inset 0 0 30px 20px rgba(250, 249, 246, 0.7); /* difuminado en bordes */
+    }
+    /* Para la imagen de fondo (usamos una imagen real en lugar de background para mejor control) */
+    .hero-image .image {
+      width: 100%;
+      height: 100%;
+      background: url('https://i.postimg.cc/k526sS8G/Sin-tisstulo.jpg') no-repeat center center/cover;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    /* ===== ROOMS SECTION ===== */
+    .section-title {
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      font-weight: 600;
+      margin: 4rem 0 1rem;
+      letter-spacing: -0.02em;
+    }
+    .section-title span {
+      color: var(--accent);
+      font-weight: 300;
+    }
+
+    .rooms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+      gap: 2.5rem;
+      margin: 3rem 0 5rem;
+    }
+
+    .room-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.35s cubic-bezier(0.2, 0, 0, 1);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s;
+    }
+    .room-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .room-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-8px) scale(1.02);
+    }
+
+    .card-img {
+      position: relative;
+      height: 240px;
+      overflow: hidden;
+    }
+    .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s;
+      display: block;
+    }
+    .card-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      box-shadow: inset 0 0 25px 15px rgba(255, 255, 255, 0.8); /* difuminado bordes */
+      border-radius: inherit;
+    }
+    .room-card:hover .card-img img {
+      transform: scale(1.05);
+    }
+    .room-info {
+      padding: 1.8rem 1.5rem 2rem;
+    }
+    .room-info h3 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+    .room-info .price {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1.6rem;
+      margin: 0.5rem 0 1rem;
+    }
+    .room-info .price small {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text-soft);
+    }
+    .room-features {
+      display: flex;
+      gap: 1.2rem;
+      margin: 1.2rem 0 1.8rem;
+      color: var(--text-soft);
+      font-size: 0.95rem;
+      flex-wrap: wrap;
+    }
+    .room-features i {
+      color: var(--accent);
+      margin-right: 0.2rem;
+      transition: transform 0.2s;
+    }
+    .room-features span:hover i {
+      transform: scale(1.2) rotate(5deg);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      padding: 0.7rem 1.8rem;
+      border-radius: 3rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      cursor: pointer;
+      display: inline-block;
+    }
+    .btn-outline:hover {
+      background: var(--accent);
+      color: white;
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px -8px var(--accent);
+    }
+
+    /* ===== BOOKING FORM ===== */
+    .booking-panel {
+      background: white;
+      border-radius: 3.5rem;
+      padding: clamp(2rem, 5vw, 3.5rem);
+      box-shadow: var(--shadow-sm);
+      margin: 5rem 0 6rem;
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5rem;
+      align-items: end;
+    }
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .form-field label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.3px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+    }
+    .form-field input {
+      background: #f4f2f0;
+      border: none;
+      padding: 1rem 1.2rem;
+      border-radius: 2rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      transition: 0.2s;
+      border: 1px solid transparent;
+      width: 100%;
+    }
+    .form-field input:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(232,106,95,0.15);
+    }
+    .btn-large {
+      background: var(--accent);
+      border: none;
+      color: white;
+      font-weight: 700;
+      padding: 1rem 2rem;
+      border-radius: 3rem;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      height: fit-content;
+      white-space: nowrap;
+      box-shadow: 0 8px 18px -6px rgba(232,106,95,0.4);
+      width: 100%;
+    }
+    .btn-large:hover {
+      background: #d44e42;
+      transform: scale(1.02) translateY(-2px);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #1e1e2a;
+      color: #d9d9df;
+      padding: 3rem 2rem;
+      border-top-left-radius: 3rem;
+      border-top-right-radius: 3rem;
+      margin-top: 4rem;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 3rem;
+    }
+    .footer-col p {
+      margin: 1.2rem 0 1.5rem;
+      opacity: 0.8;
+      font-size: 0.95rem;
+    }
+    .social-icons {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .social-icons a {
+      color: white;
+      background: #313145;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+    }
+    .social-icons a:hover {
+      background: var(--accent);
+      transform: translateY(-5px) rotate(8deg);
+    }
+    .footer-col h4 {
+      color: white;
+      margin-bottom: 1.5rem;
+    }
+    .footer-col ul {
+      list-style: none;
+    }
+    .footer-col li {
+      margin-bottom: 0.8rem;
+      transition: transform 0.2s;
+    }
+    .footer-col li:hover {
+      transform: translateX(5px);
+    }
+    .footer-col a {
+      color: #b9b9cf;
+      text-decoration: none;
+    }
+    .footer-col a:hover {
+      color: var(--accent);
+    }
+
+    /* animaciones generales */
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    .fade-up {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* responsive extra */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .nav-links {
+        order: 3;
+        justify-content: center;
+      }
+      .lang-selector {
+        align-self: flex-end;
+      }
+      .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .hero-content p {
+        max-width: 100%;
+      }
+      .hero-image {
+        max-width: 90%;
+        margin: 0 auto;
+      }
+    }
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 1rem;
+      }
+      .room-features {
+        gap: 0.8rem;
+      }
+      .btn-large {
+        font-size: 1rem;
+        padding: 0.9rem 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Casa Milagro y Yamile<span>.</span></div>
+    <div class="nav-links">
+      <a href="#" data-i18n="nav_home">Home</a>
+      <a href="#rooms" data-i18n="nav_rooms">Rooms</a>
+      <a href="#booking" data-i18n="nav_booking">Booking</a>
+      <a href="#footer" data-i18n="nav_contact">Contact</a>
+    </div>
+    <div class="lang-selector">
+      <button class="lang-btn" data-lang="es" title="Español">🇪🇸</button>
+      <button class="lang-btn" data-lang="en" title="English">🇬🇧</button>
+      <button class="lang-btn" data-lang="fr" title="Français">🇫🇷</button>
+      <button class="lang-btn" data-lang="de" title="Deutsch">🇩🇪</button>
+      <button class="lang-btn" data-lang="it" title="Italiano">🇮🇹</button>
+      <button class="lang-btn" data-lang="pt" title="Português">🇵🇹</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <span class="badge"><i class="fas fa-tag" style="margin-right: 6px;"></i> <span data-i18n="hero_badge">Casa Milagro y Yamile · granada</span></span>
+          <h1 data-i18n="hero_title">donde viajar<br>se siente como hogar</h1>
+          <p data-i18n="hero_sub">Habitaciones diseñadas para el descanso, espacios comunes vibrantes y la mejor luz. Reserva directa sin comisión.</p>
+          <a href="#booking" class="btn"><span data-i18n="hero_btn">disponibilidad</span> <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="hero-image">
+          <div class="image" aria-label="hostel interior"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROOMS CARDS -->
+    <div class="container" id="rooms">
+      <h2 class="section-title"><span data-i18n="rooms_title_prefix">habita</span><span data-i18n="rooms_title_suffix">ciones</span></h2>
+      <div class="rooms-grid">
+        <!-- Card 1 -->
+        <div class="room-card fade-up">
+          <div class="card-img">
+            <img src="https://i.imgur.com/mtdSQZC.jpeg" alt="Loft privado" loading="lazy">
+          </div>
+          <div class="room-info">
+            <h3 data-i18n="room1_name">privada · loft</h3>
+            <div class="price">€75 <small data-i18n="per_night">/ noche</small></div>
+            <p data-i18n="room1_desc">Cama queen, baño privado, terraza con hamaca.</p>
+            <div class="room-features">
+              <span><i class="fas fa-wifi"></i> <span data-i18n="wifi">5G</span></span>
+              <span><i class="fas fa-snowflake"></i> <span data-i18n="air">aire</span></span>
+              <span><i class="fas fa-coffee"></i> <span data-i18n="breakfast">desayuno</span></span>
+            </div>
+            <button class="btn-outline" onclick="alert('📅 Simulación: habitarías el loft.')" data-i18n="select_btn">seleccionar</button>
+          </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="room-card fade-up">
+          <div class="card-img">
+            <img src="https://i.postimg.cc/4YjhvfBg/Sintyt-titulo.jpg" alt="Compartida eco" loading="lazy">
+          </div>
+          <div class="room-info">
+            <h3 data-i18n="room2_name">compartida · eco</h3>
+            <div class="price">€29 <small data-i18n="per_night">/ noche</small></div>
+            <p data-i18n="room2_desc">Cama individual, taquilla personal, luz de lectura.</p>
+            <div class="room-features">
+              <span><i class="fas fa-wifi"></i> <span data-i18n="wifi">5G</span></span>
+              <span><i class="fas fa-lock"></i> <span data-i18n="locker">locker</span></span>
+              <span><i class="fas fa-users"></i> <span data-i18n="people">4 pers</span></span>
+            </div>
+            <button class="btn-outline" onclick="alert('🎒 Reservar cama en compartida.')" data-i18n="select_btn">seleccionar</button>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="room-card fade-up">
+          <div class="card-img">
+            <img src="https://i.postimg.cc/43xbgncm/Sintyt-titulo.jpg" alt="Estudio superior" loading="lazy">
+          </div>
+          <div class="room-info">
+            <h3 data-i18n="room3_name">superior · estudio</h3>
+            <div class="price">€115 <small data-i18n="per_night">/ noche</small></div>
+            <p data-i18n="room3_desc">Habitación con cocina equipada y salón privado.</p>
+            <div class="room-features">
+              <span><i class="fas fa-kitchen-set"></i> <span data-i18n="kitchen">cocina</span></span>
+              <span><i class="fas fa-tv"></i> <span data-i18n="tv">smart tv</span></span>
+              <span><i class="fas fa-city"></i> <span data-i18n="view">vistas</span></span>
+            </div>
+            <button class="btn-outline" onclick="alert('✨ Suite estudio seleccionada (simulación).')" data-i18n="select_btn">seleccionar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOOKING FORM SECTION -->
+    <div class="container" id="booking">
+      <div class="booking-panel fade-up">
+        <h2 style="font-size: clamp(1.8rem, 4vw, 2rem); margin-bottom: 2rem; font-weight: 600;"><span data-i18n="booking_title1">comprueba</span> <span style="color: var(--accent);" data-i18n="booking_title2">disponibilidad</span></h2>
+        <form id="bookingForm" onsubmit="event.preventDefault(); alert('✨ Simulación: consulta enviada (modo demo). Nos vemos pronto ✨');">
+          <div class="form-grid">
+            <div class="form-field">
+              <label><i class="far fa-calendar-alt" style="margin-right: 6px;"></i> <span data-i18n="arrival">llegada</span></label>
+              <input type="text" class="datepicker" id="checkin" placeholder="Selecciona fecha" required data-i18n-placeholder="arrival_placeholder">
+            </div>
+            <div class="form-field">
+              <label><i class="far fa-calendar-check"></i> <span data-i18n="departure">salida</span></label>
+              <input type="text" class="datepicker" id="checkout" placeholder="Selecciona fecha" required data-i18n-placeholder="departure_placeholder">
+            </div>
+            <div class="form-field">
+              <label><i class="fas fa-user-friends"></i> <span data-i18n="travelers">viajeros</span></label>
+              <input type="number" min="1" max="8" value="2" step="1" required>
+            </div>
+            <div class="form-field">
+              <label><i class="fas fa-tag"></i> <span data-i18n="code">código</span></label>
+              <input type="text" placeholder="opcional" data-i18n-placeholder="code_placeholder">
+            </div>
+            <button type="submit" class="btn-large"><span data-i18n="search_btn">buscar</span> <i class="fas fa-search" style="margin-left: 8px;"></i></button>
+          </div>
+        </form>
+        <p style="margin-top: 2rem; color: var(--text-soft); font-size: 0.9rem;"><i class="fas fa-shield-alt" style="color: var(--accent);"></i> <span data-i18n="booking_footnote">Reserva flexible · sin cargo de cancelación hasta 48h antes.</span></p>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <div class="logo" style="color: white;">Casa Milagro<span style="color: var(--accent);">.</span></div>
+        <p data-i18n="footer_desc">Casa Milagro y Yamile es un hostal de diseño en el corazón de Granada. Habitaciones con alma y comunidad viajera.</p>
+        <div class="social-icons">
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_explore">explorar</h4>
+        <ul>
+          <li><a href="#" data-i18n="about">Sobre Casa Milagro</a></li>
+          <li><a href="#" data-i18n="rooms_footer">Habitaciones</a></li>
+          <li><a href="#" data-i18n="services">Servicios</a></li>
+          <li><a href="#" data-i18n="blog">Blog viajero</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="legal">legal</h4>
+        <ul>
+          <li><a href="#" data-i18n="terms">Términos</a></li>
+          <li><a href="#" data-i18n="privacy">Privacidad</a></li>
+          <li><a href="#" data-i18n="cookies">Cookies</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="contact">contacto</h4>
+        <ul>
+          <li><i class="fas fa-phone-alt" style="margin-right: 8px;"></i> +34 658 12 34 56</li>
+          <li><i class="fas fa-envelope"></i> hola@casamilagro.com</li>
+          <li><i class="fas fa-map-pin"></i> <span data-i18n="address">Cuesta de Gomérez 12, Granada</span></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <!-- scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    (function() {
+      // Traducciones
+      const translations = {
+        es: {
+          nav_home: 'Home',
+          nav_rooms: 'Habitaciones',
+          nav_booking: 'Reservar',
+          nav_contact: 'Contacto',
+          hero_badge: 'Casa Milagro y Yamile · granada',
+          hero_title: 'donde viajar<br>se siente como hogar',
+          hero_sub: 'Habitaciones diseñadas para el descanso, espacios comunes vibrantes y la mejor luz. Reserva directa sin comisión.',
+          hero_btn: 'disponibilidad',
+          rooms_title_prefix: 'habita',
+          rooms_title_suffix: 'ciones',
+          room1_name: 'privada · loft',
+          room2_name: 'compartida · eco',
+          room3_name: 'superior · estudio',
+          per_night: '/ noche',
+          room1_desc: 'Cama queen, baño privado, terraza con hamaca.',
+          room2_desc: 'Cama individual, taquilla personal, luz de lectura.',
+          room3_desc: 'Habitación con cocina equipada y salón privado.',
+          wifi: '5G',
+          air: 'aire',
+          breakfast: 'desayuno',
+          locker: 'locker',
+          people: '4 pers',
+          kitchen: 'cocina',
+          tv: 'smart tv',
+          view: 'vistas',
+          select_btn: 'seleccionar',
+          booking_title1: 'comprueba',
+          booking_title2: 'disponibilidad',
+          arrival: 'llegada',
+          departure: 'salida',
+          travelers: 'viajeros',
+          code: 'código',
+          arrival_placeholder: 'Selecciona fecha',
+          departure_placeholder: 'Selecciona fecha',
+          code_placeholder: 'opcional',
+          search_btn: 'buscar',
+          booking_footnote: 'Reserva flexible · sin cargo de cancelación hasta 48h antes.',
+          footer_desc: 'Casa Milagro y Yamile es un hostal de diseño en el corazón de Granada. Habitaciones con alma y comunidad viajera.',
+          footer_explore: 'explorar',
+          about: 'Sobre Casa Milagro',
+          rooms_footer: 'Habitaciones',
+          services: 'Servicios',
+          blog: 'Blog viajero',
+          legal: 'legal',
+          terms: 'Términos',
+          privacy: 'Privacidad',
+          cookies: 'Cookies',
+          contact: 'contacto',
+          address: 'Cuesta de Gomérez 12, Granada'
+        },
+        en: {
+          nav_home: 'Home',
+          nav_rooms: 'Rooms',
+          nav_booking: 'Booking',
+          nav_contact: 'Contact',
+          hero_badge: 'Casa Milagro y Yamile · granada',
+          hero_title: 'where traveling<br>feels like home',
+          hero_sub: 'Rooms designed for rest, vibrant common spaces, and the best light. Direct booking with no commission.',
+          hero_btn: 'availability',
+          rooms_title_prefix: 'our ',
+          rooms_title_suffix: 'rooms',
+          room1_name: 'private · loft',
+          room2_name: 'shared · eco',
+          room3_name: 'superior · studio',
+          per_night: '/ night',
+          room1_desc: 'Queen bed, private bathroom, terrace with hammock.',
+          room2_desc: 'Single bed, personal locker, reading light.',
+          room3_desc: 'Room with equipped kitchen and private living room.',
+          wifi: '5G',
+          air: 'AC',
+          breakfast: 'breakfast',
+          locker: 'locker',
+          people: '4 pax',
+          kitchen: 'kitchen',
+          tv: 'smart TV',
+          view: 'views',
+          select_btn: 'select',
+          booking_title1: 'check',
+          booking_title2: 'availability',
+          arrival: 'arrival',
+          departure: 'departure',
+          travelers: 'travelers',
+          code: 'code',
+          arrival_placeholder: 'Select date',
+          departure_placeholder: 'Select date',
+          code_placeholder: 'optional',
+          search_btn: 'search',
+          booking_footnote: 'Flexible booking · free cancellation up to 48h before.',
+          footer_desc: 'Casa Milagro y Yamile is a design hostel in the heart of Granada. Rooms with soul and traveling community.',
+          footer_explore: 'explore',
+          about: 'About Casa Milagro',
+          rooms_footer: 'Rooms',
+          services: 'Services',
+          blog: 'Travel blog',
+          legal: 'legal',
+          terms: 'Terms',
+          privacy: 'Privacy',
+          cookies: 'Cookies',
+          contact: 'contact',
+          address: 'Cuesta de Gomérez 12, Granada'
+        },
+        fr: {
+          nav_home: 'Accueil',
+          nav_rooms: 'Chambres',
+          nav_booking: 'Réservation',
+          nav_contact: 'Contact',
+          hero_badge: 'Casa Milagro y Yamile · grenade',
+          hero_title: 'où voyager<br>se sent comme à la maison',
+          hero_sub: 'Chambres conçues pour le repos, espaces communs vibrants et la meilleure lumière. Réservation directe sans commission.',
+          hero_btn: 'disponibilités',
+          rooms_title_prefix: 'nos ',
+          rooms_title_suffix: 'chambres',
+          room1_name: 'privée · loft',
+          room2_name: 'partagée · éco',
+          room3_name: 'supérieure · studio',
+          per_night: '/ nuit',
+          room1_desc: 'Lit queen, salle de bain privée, terrasse avec hamac.',
+          room2_desc: 'Lit simple, casier personnel, liseuse.',
+          room3_desc: 'Chambre avec cuisine équipée et salon privé.',
+          wifi: '5G',
+          air: 'clim',
+          breakfast: 'petit-déj',
+          locker: 'casier',
+          people: '4 pers',
+          kitchen: 'cuisine',
+          tv: 'smart TV',
+          view: 'vue',
+          select_btn: 'sélectionner',
+          booking_title1: 'vérifier',
+          booking_title2: 'disponibilités',
+          arrival: 'arrivée',
+          departure: 'départ',
+          travelers: 'voyageurs',
+          code: 'code',
+          arrival_placeholder: 'Sélectionner date',
+          departure_placeholder: 'Sélectionner date',
+          code_placeholder: 'optionnel',
+          search_btn: 'chercher',
+          booking_footnote: 'Réservation flexible · annulation gratuite jusqu’à 48h avant.',
+          footer_desc: 'Casa Milagro y Yamile est une auberge de design au cœur de Grenade. Chambres avec âme et communauté voyageuse.',
+          footer_explore: 'explorer',
+          about: 'À propos',
+          rooms_footer: 'Chambres',
+          services: 'Services',
+          blog: 'Blog voyage',
+          legal: 'légal',
+          terms: 'Conditions',
+          privacy: 'Confidentialité',
+          cookies: 'Cookies',
+          contact: 'contact',
+          address: 'Cuesta de Gomérez 12, Grenade'
+        },
+        de: {
+          nav_home: 'Start',
+          nav_rooms: 'Zimmer',
+          nav_booking: 'Buchung',
+          nav_contact: 'Kontakt',
+          hero_badge: 'Casa Milagro y Yamile · granada',
+          hero_title: 'wo Reisen<br>sich wie zuhause anfühlt',
+          hero_sub: 'Zimmer zum Ausruhen, lebendige Gemeinschaftsräume und das beste Licht. Direktbuchung ohne Provision.',
+          hero_btn: 'Verfügbarkeit',
+          rooms_title_prefix: 'unsere ',
+          rooms_title_suffix: 'Zimmer',
+          room1_name: 'privat · loft',
+          room2_name: 'geteilt · öko',
+          room3_name: 'Superior · Studio',
+          per_night: '/ Nacht',
+          room1_desc: 'Queen-Bett, eigenes Bad, Terrasse mit Hängematte.',
+          room2_desc: 'Einzelbett, persönliches Schließfach, Leselicht.',
+          room3_desc: 'Zimmer mit Küche und eigenem Wohnzimmer.',
+          wifi: '5G',
+          air: 'Klima',
+          breakfast: 'Frühstück',
+          locker: 'Schließfach',
+          people: '4 Pers',
+          kitchen: 'Küche',
+          tv: 'Smart-TV',
+          view: 'Aussicht',
+          select_btn: 'auswählen',
+          booking_title1: 'Prüfe',
+          booking_title2: 'Verfügbarkeit',
+          arrival: 'Anreise',
+          departure: 'Abreise',
+          travelers: 'Reisende',
+          code: 'Code',
+          arrival_placeholder: 'Datum wählen',
+          departure_placeholder: 'Datum wählen',
+          code_placeholder: 'optional',
+          search_btn: 'suchen',
+          booking_footnote: 'Flexible Buchung · kostenlose Stornierung bis 48h vorher.',
+          footer_desc: 'Casa Milagro y Yamile ist eine Design-Herberge im Herzen Granadas. Zimmer mit Seele und Reisegemeinschaft.',
+          footer_explore: 'entdecken',
+          about: 'Über Casa Milagro',
+          rooms_footer: 'Zimmer',
+          services: 'Services',
+          blog: 'Reiseblog',
+          legal: 'Rechtliches',
+          terms: 'AGB',
+          privacy: 'Datenschutz',
+          cookies: 'Cookies',
+          contact: 'Kontakt',
+          address: 'Cuesta de Gomérez 12, Granada'
+        },
+        it: {
+          nav_home: 'Home',
+          nav_rooms: 'Camere',
+          nav_booking: 'Prenota',
+          nav_contact: 'Contatti',
+          hero_badge: 'Casa Milagro y Yamile · granada',
+          hero_title: 'dove viaggiare<br>sembra casa',
+          hero_sub: 'Camere pensate per il riposo, spazi comuni vivaci e la migliore luce. Prenotazione diretta senza commissioni.',
+          hero_btn: 'disponibilità',
+          rooms_title_prefix: 'le nostre ',
+          rooms_title_suffix: 'camere',
+          room1_name: 'privata · loft',
+          room2_name: 'condivisa · eco',
+          room3_name: 'superiore · studio',
+          per_night: '/ notte',
+          room1_desc: 'Letto queen, bagno privato, terrazza con amaca.',
+          room2_desc: 'Letto singolo, armadietto personale, luce per lettura.',
+          room3_desc: 'Camera con cucina attrezzata e soggiorno privato.',
+          wifi: '5G',
+          air: 'aria',
+          breakfast: 'colazione',
+          locker: 'armadietto',
+          people: '4 pers',
+          kitchen: 'cucina',
+          tv: 'smart tv',
+          view: 'vista',
+          select_btn: 'seleziona',
+          booking_title1: 'controlla',
+          booking_title2: 'disponibilità',
+          arrival: 'arrivo',
+          departure: 'partenza',
+          travelers: 'viaggiatori',
+          code: 'codice',
+          arrival_placeholder: 'Seleziona data',
+          departure_placeholder: 'Seleziona data',
+          code_placeholder: 'opzionale',
+          search_btn: 'cerca',
+          booking_footnote: 'Prenotazione flessibile · cancellazione gratuita fino a 48h prima.',
+          footer_desc: 'Casa Milagro y Yamile è un ostello di design nel cuore di Granada. Camere con anima e comunità di viaggiatori.',
+          footer_explore: 'esplora',
+          about: 'Chi siamo',
+          rooms_footer: 'Camere',
+          services: 'Servizi',
+          blog: 'Blog di viaggio',
+          legal: 'legale',
+          terms: 'Termini',
+          privacy: 'Privacy',
+          cookies: 'Cookie',
+          contact: 'contatti',
+          address: 'Cuesta de Gomérez 12, Granada'
+        },
+        pt: {
+          nav_home: 'Início',
+          nav_rooms: 'Quartos',
+          nav_booking: 'Reservar',
+          nav_contact: 'Contato',
+          hero_badge: 'Casa Milagro y Yamile · granada',
+          hero_title: 'onde viajar<br>parece lar',
+          hero_sub: 'Quartos projetados para descanso, espaços comuns vibrantes e a melhor luz. Reserva direta sem comissão.',
+          hero_btn: 'disponibilidade',
+          rooms_title_prefix: 'nossos ',
+          rooms_title_suffix: 'quartos',
+          room1_name: 'privado · loft',
+          room2_name: 'compartilhado · eco',
+          room3_name: 'superior · estúdio',
+          per_night: '/ noite',
+          room1_desc: 'Cama queen, banheiro privativo, terraço com rede.',
+          room2_desc: 'Cama individual, armário pessoal, luz de leitura.',
+          room3_desc: 'Quarto com cozinha equipada e sala privativa.',
+          wifi: '5G',
+          air: 'ar',
+          breakfast: 'café da manhã',
+          locker: 'armário',
+          people: '4 pess',
+          kitchen: 'cozinha',
+          tv: 'smart tv',
+          view: 'vistas',
+          select_btn: 'selecionar',
+          booking_title1: 'verifique',
+          booking_title2: 'disponibilidade',
+          arrival: 'chegada',
+          departure: 'saída',
+          travelers: 'viajantes',
+          code: 'código',
+          arrival_placeholder: 'Selecione a data',
+          departure_placeholder: 'Selecione a data',
+          code_placeholder: 'opcional',
+          search_btn: 'buscar',
+          booking_footnote: 'Reserva flexível · cancelamento gratuito até 48h antes.',
+          footer_desc: 'Casa Milagro y Yamile é um albergue de design no coração de Granada. Quartos com alma e comunidade viajante.',
+          footer_explore: 'explorar',
+          about: 'Sobre Casa Milagro',
+          rooms_footer: 'Quartos',
+          services: 'Serviços',
+          blog: 'Blog de viagem',
+          legal: 'legal',
+          terms: 'Termos',
+          privacy: 'Privacidade',
+          cookies: 'Cookies',
+          contact: 'contato',
+          address: 'Cuesta de Gomérez 12, Granada'
+        }
+      };
+
+      // Detectar idioma del navegador
+      function getBrowserLang() {
+        const lang = navigator.language || navigator.userLanguage;
+        const shortLang = lang.split('-')[0];
+        return translations[shortLang] ? shortLang : 'en';
+      }
+
+      let currentLang = localStorage.getItem('vela-lang') || getBrowserLang();
+      if (!translations[currentLang]) currentLang = 'en';
+
+      // Función para aplicar traducciones
+      function applyTranslations(lang) {
+        const t = translations[lang];
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          const key = el.getAttribute('data-i18n');
+          if (t[key]) {
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+              // Para inputs, el placeholder se maneja con data-i18n-placeholder
+            } else {
+              el.innerHTML = t[key];
+            }
+          }
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+          const key = el.getAttribute('data-i18n-placeholder');
+          if (t[key]) {
+            el.placeholder = t[key];
+          }
+        });
+        // Actualizar botones de idioma activos
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+          btn.classList.remove('active');
+          if (btn.dataset.lang === lang) btn.classList.add('active');
+        });
+        localStorage.setItem('vela-lang', lang);
+      }
+
+      // Event listeners para botones de idioma
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentLang = btn.dataset.lang;
+          applyTranslations(currentLang);
+          // Re-inicializar flatpickr con nuevo locale
+          flatpickr(".datepicker", {
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            locale: currentLang === 'es' ? 'es' : (currentLang === 'fr' ? 'fr' : (currentLang === 'de' ? 'de' : (currentLang === 'it' ? 'it' : (currentLang === 'pt' ? 'pt' : 'en')))),
+            showMonths: 2
+          });
+        });
+      });
+
+      // Aplicar idioma inicial
+      applyTranslations(currentLang);
+
+      // 1. inicializar flatpickr en campos con clase datepicker
+      flatpickr(".datepicker", {
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        locale: currentLang === 'es' ? 'es' : (currentLang === 'fr' ? 'fr' : (currentLang === 'de' ? 'de' : (currentLang === 'it' ? 'it' : (currentLang === 'pt' ? 'pt' : 'en')))),
+        showMonths: 2
+      });
+
+      // 2. scroll reveal (fade-up)
+      const fadeElements = document.querySelectorAll('.fade-up, .room-card');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.15, rootMargin: "0px 0px -20px 0px" });
+
+      fadeElements.forEach(el => observer.observe(el));
+
+      window.addEventListener('load', () => {
+        fadeElements.forEach(el => {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight - 100) {
+            el.classList.add('visible');
+          }
+        });
+      });
+
+      // 3. comportamiento suave a los enlaces internos
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          const targetId = this.getAttribute('href');
+          if (targetId === "#") return;
+          const target = document.querySelector(targetId);
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+    })();
+  </script>
+  <!-- estilo para flatpickr -->
+  <style>
+    .flatpickr-calendar { background: #ffffff; border-radius: 24px; box-shadow: 0 20px 40px -12px rgba(0,0,0,0.2); }
+    .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange { background: #e86a5f; border-color: #e86a5f; }
+  </style>
+</body>
+</html>
