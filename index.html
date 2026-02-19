@@ -25,6 +25,7 @@
       line-height: 1.5;
       scroll-behavior: smooth;
       overflow-x: hidden;
+      transition: background-color 0.3s, color 0.3s;
     }
 
     :root {
@@ -39,6 +40,32 @@
       --border-radius-card: 1.8rem;
       --border-radius-btn: 3rem;
       --header-height: auto;
+    }
+
+    /* Modo oscuro */
+    body.dark-mode {
+      --bg-light: #1a1a24;
+      --card-bg: #2a2a35;
+      --text-dark: #ededf0;
+      --text-soft: #b0b0c0;
+      --shadow-sm: 0 12px 28px -8px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
+      --shadow-hover: 0 24px 42px -12px rgba(232,106,95,0.5);
+      background-color: #1a1a24;
+      color: #ededf0;
+    }
+    body.dark-mode .card-img img,
+    body.dark-mode .hero-image .image {
+      filter: brightness(0.9);
+    }
+    body.dark-mode .btn,
+    body.dark-mode .btn-large,
+    body.dark-mode .btn-outline:hover {
+      background: #d44e42;
+    }
+    body.dark-mode .form-field input {
+      background: #33333f;
+      color: #ededf0;
+      border-color: #444;
     }
 
     .container {
@@ -65,17 +92,19 @@
       border-bottom: 1px solid rgba(0,0,0,0.02);
       box-shadow: var(--shadow-sm);
       flex-wrap: wrap;
-      transition: transform 0.3s ease-in-out;
+      transition: transform 0.3s ease-in-out, background-color 0.3s;
     }
-    /* Clase para ocultar el header (desplazarlo hacia arriba) */
+    body.dark-mode header {
+      background-color: rgba(30,30,40,0.85);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
     header.header-hidden {
       transform: translateY(-100%);
     }
 
-    /* Placeholder que mantiene la altura del header para evitar saltos */
     .header-placeholder {
       width: 100%;
-      height: 0; /* Se actualizará con JS */
+      height: 0;
       transition: height 0.3s ease;
     }
 
@@ -88,7 +117,6 @@
     }
     .logo span { color: var(--accent); font-weight: 300; }
 
-    /* Navegación desktop - siempre visible, en móvil se adapta */
     .nav-links {
       display: flex;
       gap: 2rem;
@@ -108,33 +136,216 @@
       transform: translateY(-2px);
     }
 
-    /* Selector de idiomas (siempre visible) */
-    .lang-selector {
-      display: flex;
-      gap: 0.4rem;
-      align-items: center;
-      background: rgba(255,255,255,0.5);
-      padding: 0.3rem 0.6rem;
-      border-radius: 3rem;
-      backdrop-filter: blur(4px);
-      margin: 0 0.5rem;
-    }
-    .lang-btn {
-      background: transparent;
+    /* === BOTÓN DE AJUSTES FLOTANTE === */
+    .settings-toggle {
+      position: fixed;
+      right: 20px;
+      bottom: 30px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
       border: none;
+      box-shadow: 0 6px 20px rgba(232,106,95,0.5);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      z-index: 999;
+      transition: transform 0.3s, opacity 0.3s, background-color 0.2s;
+      opacity: 1;
+      transform: scale(1);
+    }
+    .settings-toggle.hidden {
+      opacity: 0;
+      transform: scale(0.8);
+      pointer-events: none;
+    }
+    .settings-toggle:hover {
+      background: #d44e42;
+      transform: scale(1.1);
+    }
+
+    /* Panel de ajustes */
+    .settings-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: min(380px, 90vw);
+      height: 100vh;
+      background: var(--card-bg);
+      box-shadow: -10px 0 40px rgba(0,0,0,0.15);
+      z-index: 1100;
+      padding: 2rem 1.8rem;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      overflow-y: auto;
+      border-top-left-radius: 2.5rem;
+      border-bottom-left-radius: 2.5rem;
+    }
+    body.dark-mode .settings-panel {
+      background: #2a2a35;
+      box-shadow: -10px 0 40px rgba(0,0,0,0.5);
+    }
+    .settings-panel.open {
+      transform: translateX(0);
+    }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(128,128,128,0.2);
+      padding-bottom: 1rem;
+    }
+    .panel-header h3 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .close-panel {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      cursor: pointer;
+      color: var(--text-soft);
+      transition: transform 0.2s;
+    }
+    .close-panel:hover {
+      transform: rotate(90deg);
+      color: var(--accent);
+    }
+
+    .settings-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .settings-section h4 {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-soft);
+      margin-bottom: 0.3rem;
+    }
+
+    /* Selector de idiomas en panel */
+    .lang-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+      gap: 0.8rem;
+    }
+    .lang-option {
+      background: transparent;
+      border: 1px solid rgba(128,128,128,0.2);
+      border-radius: 3rem;
+      padding: 0.5rem 0.3rem;
       font-size: 1.2rem;
       cursor: pointer;
-      padding: 0.2rem 0.3rem;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+    }
+    .lang-option span {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+    .lang-option:hover {
+      border-color: var(--accent);
+      transform: scale(1.02);
+    }
+    .lang-option.active {
+      background: var(--accent-light);
+      border-color: var(--accent);
+    }
+    body.dark-mode .lang-option.active {
+      background: #d44e42;
+      color: white;
+    }
+    body.dark-mode .lang-option.active span {
+      color: white;
+    }
+
+    /* Toggle modo oscuro */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(128,128,128,0.08);
+      padding: 1rem 1.5rem;
+      border-radius: 3rem;
+    }
+    .theme-label {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-weight: 500;
+    }
+    .theme-label i {
+      font-size: 1.4rem;
+      color: var(--accent);
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 30px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .3s;
+      border-radius: 30px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 24px;
+      width: 24px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
       border-radius: 50%;
-      transition: transform 0.2s, box-shadow 0.2s;
-      line-height: 1;
     }
-    .lang-btn:hover {
-      transform: scale(1.2);
-      box-shadow: 0 0 0 3px rgba(232,106,95,0.3);
+    input:checked + .slider {
+      background-color: var(--accent);
     }
-    .lang-btn.active {
-      box-shadow: 0 0 0 2px var(--accent);
+    input:checked + .slider:before {
+      transform: translateX(30px);
+    }
+
+    /* Overlay para cerrar panel */
+    .panel-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(3px);
+      z-index: 1050;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .panel-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
     }
 
     /* === HERO (BANNER PRINCIPAL) === */
@@ -148,7 +359,10 @@
       border-bottom-right-radius: 4rem;
       overflow: hidden;
       z-index: 1;
-      margin-top: 0; /* Se ajusta con el placeholder */
+      margin-top: 0;
+    }
+    body.dark-mode .hero {
+      background: linear-gradient(115deg, #2a2a35 0%, #1f1f2b 100%);
     }
     .hero::after {
       content: '';
@@ -237,7 +451,6 @@
       100%{transform:rotate(0);}
     }
 
-    /* Hero image - SIN DIFUMINADO */
     .hero-image {
       position: relative;
       height: min(420px, 55vw);
@@ -263,6 +476,7 @@
       font-weight: 600;
       margin: 3rem 0 1rem;
       letter-spacing: -0.02em;
+      color: var(--text-dark);
     }
     .section-title span { color: var(--accent); font-weight: 300; }
 
@@ -280,7 +494,7 @@
       box-shadow: var(--shadow-sm);
       opacity: 0;
       transform: translateY(30px);
-      transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s;
+      transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s, background-color 0.3s;
     }
     .room-card.visible { opacity: 1; transform: translateY(0); }
     .room-card:hover {
@@ -303,7 +517,7 @@
     .room-card:hover .card-img img { transform: scale(1.05); }
 
     .room-info { padding: 1.5rem 1.2rem 1.8rem; }
-    .room-info h3 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.2rem; }
+    .room-info h3 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.2rem; color: var(--text-dark); }
     .room-info .price {
       color: var(--accent);
       font-weight: 700;
@@ -443,12 +657,13 @@
 
     /* === FORMULARIO DE RESERVA === */
     .booking-panel {
-      background: white;
+      background: var(--card-bg);
       border-radius: 2.5rem;
       padding: clamp(1.8rem, 5vw, 3rem);
       box-shadow: var(--shadow-sm);
       margin: 3rem 0 4rem;
       border: 1px solid rgba(255,255,255,0.6);
+      transition: background-color 0.3s;
     }
     .form-grid {
       display: grid;
@@ -478,12 +693,21 @@
       transition: 0.2s;
       border: 1px solid transparent;
       width: 100%;
+      color: var(--text-dark);
+    }
+    body.dark-mode .form-field input {
+      background: #33333f;
+      color: #ededf0;
+      border-color: #444;
     }
     .form-field input:focus {
       outline: none;
       border-color: var(--accent);
       background: #ffffff;
       box-shadow: 0 0 0 4px rgba(232,106,95,0.15);
+    }
+    body.dark-mode .form-field input:focus {
+      background: #3a3a48;
     }
     .btn-large {
       background: var(--accent);
@@ -608,6 +832,13 @@
         font-size: 1.2rem;
       }
       .map-container { height: 300px; }
+      .settings-toggle {
+        width: 48px;
+        height: 48px;
+        font-size: 1.4rem;
+        right: 15px;
+        bottom: 20px;
+      }
     }
 
     @media (max-width: 480px) {
@@ -636,7 +867,6 @@
 
     @media (max-width: 360px) {
       .logo { font-size: 1.2rem; }
-      .lang-btn { font-size: 1rem; }
       .hero-content h1 { font-size: 1.8rem; }
       .hero-image { height: min(220px, 50vw); }
       .room-info { padding: 1.2rem; }
@@ -647,33 +877,62 @@
 </head>
 <body>
   <!-- Placeholder que mantiene la altura del header -->
-  <div class="header-placeholder" id="header-placeholder" style="border-radius: 100px;"></div>
+  <div class="header-placeholder" id="header-placeholder"></div>
 
   <header id="main-header">
     <div class="logo">Casa Milagro y Yamilé<span>.</span></div>
-    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
-      <!-- Navegación (siempre visible) -->
-      <div class="nav-links">
-        <a href="#" data-i18n="nav_home">Home</a>
-        <a href="#rooms" data-i18n="nav_rooms">Rooms</a>
-        <a href="#gallery" data-i18n="nav_gallery">Galería</a>
-        <a href="#map" data-i18n="nav_map">Ubicación</a>
-        <a href="#booking" data-i18n="nav_booking">Reservar</a>
-        <a href="#footer" data-i18n="nav_contact">Contacto</a>
-      </div>
-      <!-- Selector de idiomas -->
-      <div class="lang-selector">
-        <button class="lang-btn" data-lang="es" title="Español">🇪🇸</button>
-        <button class="lang-btn" data-lang="en" title="English">🇬🇧</button>
-        <button class="lang-btn" data-lang="fr" title="Français">🇫🇷</button>
-        <button class="lang-btn" data-lang="de" title="Deutsch">🇩🇪</button>
-        <button class="lang-btn" data-lang="it" title="Italiano">🇮🇹</button>
-        <button class="lang-btn" data-lang="pt" title="Português">🇵🇹</button>
+    <!-- Navegación (sin selector de idiomas) -->
+    <div class="nav-links">
+      <a href="#" data-i18n="nav_home">Home</a>
+      <a href="#rooms" data-i18n="nav_rooms">Rooms</a>
+      <a href="#gallery" data-i18n="nav_gallery">Galería</a>
+      <a href="#map" data-i18n="nav_map">Ubicación</a>
+      <a href="#booking" data-i18n="nav_booking">Reservar</a>
+      <a href="#footer" data-i18n="nav_contact">Contacto</a>
+    </div>
+  </header>
+
+  <!-- Botón flotante de ajustes -->
+  <button class="settings-toggle" id="settingsToggle" aria-label="Ajustes">
+    <i class="fas fa-cog"></i>
+  </button>
+
+  <!-- Overlay para cerrar panel -->
+  <div class="panel-overlay" id="panelOverlay"></div>
+
+  <!-- Panel de ajustes -->
+  <div class="settings-panel" id="settingsPanel">
+    <div class="panel-header">
+      <h3><i class="fas fa-cog" style="margin-right: 10px;"></i> Ajustes</h3>
+      <button class="close-panel" id="closePanel">&times;</button>
+    </div>
+
+    <div class="settings-section">
+      <h4><i class="fas fa-language"></i> Idioma</h4>
+      <div class="lang-grid" id="langGrid">
+        <!-- Se llenará con JS -->
       </div>
     </div>
-  </header style="border-radius: 100px;">
 
-  <main style="border-radius: 50px;">
+    <div class="settings-section">
+      <h4><i class="fas fa-palette"></i> Tema</h4>
+      <div class="theme-toggle">
+        <span class="theme-label">
+          <i class="fas fa-moon"></i> Modo oscuro
+        </span>
+        <label class="switch">
+          <input type="checkbox" id="darkModeToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div style="margin-top: auto; font-size: 0.85rem; color: var(--text-soft); text-align: center; padding: 1rem;">
+      <i class="fas fa-heart" style="color: var(--accent);"></i> personaliza tu experiencia
+    </div>
+  </div>
+
+  <main>
     <!-- HERO (BANNER PRINCIPAL) -->
     <section class="hero">
       <div class="container hero-grid">
@@ -687,7 +946,7 @@
       </div>
     </section>
 
-    <!-- HABITACIONES (sin difuminado) -->
+    <!-- HABITACIONES -->
     <div class="container" id="rooms">
       <h2 class="section-title"><span data-i18n="rooms_title_prefix">habita</span><span data-i18n="rooms_title_suffix">ciones</span></h2>
       <div class="rooms-grid">
@@ -743,9 +1002,7 @@
     <div class="container gallery" id="gallery">
       <h2 class="section-title"><span data-i18n="gallery_title">Galería</span></h2>
       <div class="carousel-container">
-        <div class="carousel-track" id="carouselTrack">
-          <!-- Las imágenes se insertarán dinámicamente con JS -->
-        </div>
+        <div class="carousel-track" id="carouselTrack"></div>
         <button class="carousel-btn prev" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
         <button class="carousel-btn next" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
       </div>
@@ -756,7 +1013,7 @@
     <div class="container map-section" id="map">
       <h2 class="section-title"><span data-i18n="map_title">Ubicación</span></h2>
       <div class="map-container">
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3682.9868005302683!2d-83.71426702554452!3d22.61696807946008!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88cb51e04d944045%3A0xa55bb49c1fcada2c!2sCasa%20Milagros%20y%20Yamile!5e0!3m2!1ses-419!2scu!4v1771399413479!5m2!1ses-419!2scu" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3682.9868005302683!2d-83.71426702554452!3d22.61696807946008!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88cb51e04d944045%3A0xa55bb49c1fcada2c!2sCasa%20Milagros%20y%20Yamile!5e0!3m2!1ses-419!2scu!4v1771399413479!5m2!1ses-419!2scu" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
 
@@ -1007,6 +1264,16 @@
         }
       };
 
+      // Idiomas disponibles con banderas y código
+      const langFlags = [
+        { code: 'es', flag: '🇪🇸', name: 'Español' },
+        { code: 'en', flag: '🇬🇧', name: 'English' },
+        { code: 'fr', flag: '🇫🇷', name: 'Français' },
+        { code: 'de', flag: '🇩🇪', name: 'Deutsch' },
+        { code: 'it', flag: '🇮🇹', name: 'Italiano' },
+        { code: 'pt', flag: '🇵🇹', name: 'Português' }
+      ];
+
       function getBrowserLang() {
         const lang = navigator.language || navigator.userLanguage;
         const shortLang = lang.split('-')[0];
@@ -1032,27 +1299,78 @@
             el.placeholder = t[key];
           }
         });
-        document.querySelectorAll('.lang-btn').forEach(btn => {
+        // Marcar botón de idioma activo en el panel
+        document.querySelectorAll('.lang-option').forEach(btn => {
           btn.classList.toggle('active', btn.dataset.lang === lang);
         });
         localStorage.setItem('casa-lang', lang);
       }
 
-      document.querySelectorAll('.lang-btn').forEach(btn => {
+      // ========== DARK MODE ==========
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const savedTheme = localStorage.getItem('casa-theme');
+
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.body.classList.add('dark-mode');
+        darkModeToggle.checked = true;
+      }
+
+      darkModeToggle.addEventListener('change', function() {
+        if (this.checked) {
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('casa-theme', 'dark');
+        } else {
+          document.body.classList.remove('dark-mode');
+          localStorage.setItem('casa-theme', 'light');
+        }
+      });
+
+      // ========== PANEL DE AJUSTES ==========
+      const settingsToggle = document.getElementById('settingsToggle');
+      const settingsPanel = document.getElementById('settingsPanel');
+      const panelOverlay = document.getElementById('panelOverlay');
+      const closePanel = document.getElementById('closePanel');
+
+      function openPanel() {
+        settingsPanel.classList.add('open');
+        panelOverlay.classList.add('show');
+      }
+      function closePanelFn() {
+        settingsPanel.classList.remove('open');
+        panelOverlay.classList.remove('show');
+      }
+
+      settingsToggle.addEventListener('click', openPanel);
+      closePanel.addEventListener('click', closePanelFn);
+      panelOverlay.addEventListener('click', closePanelFn);
+
+      // Cargar botones de idioma en panel
+      const langGrid = document.getElementById('langGrid');
+      langFlags.forEach(l => {
+        const btn = document.createElement('button');
+        btn.className = `lang-option ${l.code === currentLang ? 'active' : ''}`;
+        btn.dataset.lang = l.code;
+        btn.innerHTML = `${l.flag} <span>${l.name}</span>`;
         btn.addEventListener('click', () => {
-          currentLang = btn.dataset.lang;
+          currentLang = l.code;
           applyTranslations(currentLang);
+          // Reconfigurar flatpickr con nuevo locale
           flatpickr(".datepicker", {
             dateFormat: "Y-m-d",
             minDate: "today",
             locale: currentLang,
             showMonths: 2
           });
+          // Cerrar panel después de cambiar idioma (opcional)
+          closePanelFn();
         });
+        langGrid.appendChild(btn);
       });
 
       applyTranslations(currentLang);
 
+      // ========== FLATPICKR ==========
       flatpickr(".datepicker", {
         dateFormat: "Y-m-d",
         minDate: "today",
@@ -1073,7 +1391,6 @@
         'https://i.postimg.cc/Cxnp4CJG/img_20161129_213102_largejpg.jpg',
         'https://i.postimg.cc/mg1WS3VF/casa_milagros_ytfg_yamile.jpg',
         'https://i.postimg.cc/rp6XZdYH/vista_desde_el_jardin.jpg'
-        
       ];
 
       const track = document.getElementById('carouselTrack');
@@ -1159,12 +1476,7 @@
           return;
         }
 
-        const mensaje = `Hola, quiero reservar:%0A
-- Llegada: ${checkin}%0A
-- Salida: ${checkout}%0A
-- Viajeros: ${travelers}%0A
-- Código: ${code}`;
-        
+        const mensaje = `Hola, quiero reservar:%0A- Llegada: ${checkin}%0A- Salida: ${checkout}%0A- Viajeros: ${travelers}%0A- Código: ${code}`;
         window.open(`https://wa.me/5355555555?text=${mensaje}`, '_blank');
       };
 
@@ -1193,7 +1505,6 @@
       const placeholder = document.getElementById('header-placeholder');
       let lastScrollY = window.scrollY;
       let ticking = false;
-      
 
       function updateHeaderHeight() {
         const headerHeight = header.offsetHeight;
@@ -1205,12 +1516,13 @@
           window.requestAnimationFrame(() => {
             const currentScrollY = window.scrollY;
             
+            // Ocultar botón de ajustes al hacer scroll hacia abajo
             if (currentScrollY > lastScrollY && currentScrollY > 100) {
-              // Scrolling down
               header.classList.add('header-hidden');
+              settingsToggle.classList.add('hidden');
             } else {
-              // Scrolling up
               header.classList.remove('header-hidden');
+              settingsToggle.classList.remove('hidden');
             }
             
             lastScrollY = currentScrollY;
@@ -1220,7 +1532,6 @@
         }
       }
 
-      // Inicializar altura del placeholder
       updateHeaderHeight();
       window.addEventListener('resize', updateHeaderHeight);
       window.addEventListener('scroll', handleScroll);
@@ -1234,6 +1545,8 @@
           if (target) {
             e.preventDefault();
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Cerrar panel si está abierto
+            closePanelFn();
           }
         });
       });
@@ -1244,6 +1557,9 @@
   <style>
     .flatpickr-calendar { background: #ffffff; border-radius: 24px; box-shadow: 0 20px 40px -12px rgba(0,0,0,0.2); }
     .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange { background: #e86a5f; border-color: #e86a5f; }
+    body.dark-mode .flatpickr-calendar { background: #2a2a35; color: #ededf0; }
+    body.dark-mode .flatpickr-day { color: #ededf0; }
+    body.dark-mode .flatpickr-day.selected { background: #d44e42; border-color: #d44e42; color: white; }
   </style>
 </body>
 </html>
