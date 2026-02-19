@@ -1306,12 +1306,25 @@
         localStorage.setItem('casa-lang', lang);
       }
 
-      // ========== DARK MODE ==========
+      // ========== DARK MODE (basado en hora del día si no hay preferencia guardada) ==========
       const darkModeToggle = document.getElementById('darkModeToggle');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       const savedTheme = localStorage.getItem('casa-theme');
 
-      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      // Función para determinar si es de noche (entre 20:00 y 6:00)
+      function isNightTime() {
+        const hour = new Date().getHours();
+        return hour >= 20 || hour < 6;
+      }
+
+      let initialDarkMode = false;
+      if (savedTheme !== null) {
+        initialDarkMode = savedTheme === 'dark';
+      } else {
+        // Sin preferencia guardada: usamos la hora local
+        initialDarkMode = isNightTime();
+      }
+
+      if (initialDarkMode) {
         document.body.classList.add('dark-mode');
         darkModeToggle.checked = true;
       }
